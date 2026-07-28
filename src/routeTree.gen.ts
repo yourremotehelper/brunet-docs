@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
+import { Route as ApiPublicSetupAdminRouteImport } from './routes/api/public/setup-admin'
 import { Route as AuthenticatedAdminClienteIdRouteImport } from './routes/_authenticated/admin.cliente.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -58,6 +59,11 @@ const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
   path: '/api/public/update-phone',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
+  id: '/api/public/setup-admin',
+  path: '/api/public/setup-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminClienteIdRoute =
   AuthenticatedAdminClienteIdRouteImport.update({
     id: '/cliente/$id',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/_authenticated/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/admin'
+    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/admin'
+    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/_authenticated/admin/cliente/$id'
@@ -137,6 +149,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   MultiRoute: typeof MultiRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
   ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
   ApiPublicUploadRoute: typeof ApiPublicUploadRoute
 }
@@ -199,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicUpdatePhoneRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/setup-admin': {
+      id: '/api/public/setup-admin'
+      path: '/api/public/setup-admin'
+      fullPath: '/api/public/setup-admin'
+      preLoaderRoute: typeof ApiPublicSetupAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/cliente/$id': {
       id: '/_authenticated/admin/cliente/$id'
       path: '/cliente/$id'
@@ -237,6 +257,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   MultiRoute: MultiRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
   ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
   ApiPublicUploadRoute: ApiPublicUploadRoute,
 }
