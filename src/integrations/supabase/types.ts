@@ -14,7 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clients: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          phone: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          category: Database["public"]["Enums"]["document_category"]
+          client_id: string
+          file_name: string
+          file_path: string
+          id: string
+          mime_type: string
+          month: string
+          size_bytes: number
+          uploaded_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["document_category"]
+          client_id: string
+          file_name: string
+          file_path: string
+          id?: string
+          mime_type: string
+          month: string
+          size_bytes: number
+          uploaded_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["document_category"]
+          client_id?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          mime_type?: string
+          month?: string
+          size_bytes?: number
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +90,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      document_category:
+        | "facturas_emitidas"
+        | "facturas_recibidas"
+        | "recibos"
+        | "nominas"
+        | "extractos_bancarios"
+        | "documentacion"
+        | "justificantes"
+        | "otros"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +225,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      document_category: [
+        "facturas_emitidas",
+        "facturas_recibidas",
+        "recibos",
+        "nominas",
+        "extractos_bancarios",
+        "documentacion",
+        "justificantes",
+        "otros",
+      ],
+    },
   },
 } as const
