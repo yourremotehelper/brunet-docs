@@ -9,10 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MultiRouteImport } from './routes/multi'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
 
+const MultiRoute = MultiRouteImport.update({
+  id: '/multi',
+  path: '/multi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +43,74 @@ const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/multi': typeof MultiRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/multi': typeof MultiRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/multi': typeof MultiRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/update-phone' | '/api/public/upload'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/multi'
+    | '/api/public/update-phone'
+    | '/api/public/upload'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/update-phone' | '/api/public/upload'
-  id: '__root__' | '/' | '/api/public/update-phone' | '/api/public/upload'
+  to:
+    | '/'
+    | '/auth'
+    | '/multi'
+    | '/api/public/update-phone'
+    | '/api/public/upload'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/multi'
+    | '/api/public/update-phone'
+    | '/api/public/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  MultiRoute: typeof MultiRoute
   ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
   ApiPublicUploadRoute: typeof ApiPublicUploadRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/multi': {
+      id: '/multi'
+      path: '/multi'
+      fullPath: '/multi'
+      preLoaderRoute: typeof MultiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +137,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  MultiRoute: MultiRoute,
   ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
   ApiPublicUploadRoute: ApiPublicUploadRoute,
 }
