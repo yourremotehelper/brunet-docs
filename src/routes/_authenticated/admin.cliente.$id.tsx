@@ -35,7 +35,7 @@ function ClientDetail() {
       }),
     [fetchDetail, id],
   );
-  const { data, isLoading } = useQuery(opts);
+  const { data, isLoading, isError, error } = useQuery(opts);
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -107,6 +107,11 @@ function ClientDetail() {
 
       <main className="mx-auto max-w-4xl px-5 py-8">
         {isLoading && <p className="text-sm text-muted-foreground">Cargando…</p>}
+        {isError && (
+          <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
+            No se ha podido cargar este cliente: {error instanceof Error ? error.message : "Error desconocido"}
+          </div>
+        )}
         {data && (
           <>
             <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
