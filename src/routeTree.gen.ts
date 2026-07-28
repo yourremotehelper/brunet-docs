@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as MultiRouteImport } from './routes/multi'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -18,6 +19,11 @@ import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
 import { Route as AuthenticatedAdminClienteIdRouteImport } from './routes/_authenticated/admin.cliente.$id'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MultiRoute = MultiRouteImport.update({
   id: '/multi',
   path: '/multi',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/multi'
+    | '/sitemap.xml'
     | '/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/multi'
+    | '/sitemap.xml'
     | '/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/multi'
+    | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
@@ -124,12 +136,20 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   MultiRoute: typeof MultiRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
   ApiPublicUploadRoute: typeof ApiPublicUploadRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/multi': {
       id: '/multi'
       path: '/multi'
@@ -216,19 +236,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   MultiRoute: MultiRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
   ApiPublicUploadRoute: ApiPublicUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
