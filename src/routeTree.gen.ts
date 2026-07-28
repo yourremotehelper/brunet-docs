@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MultiRouteImport } from './routes/multi'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
+import { Route as AuthenticatedAdminClienteIdRouteImport } from './routes/_authenticated/admin.cliente.$id'
 
 const MultiRoute = MultiRouteImport.update({
   id: '/multi',
@@ -25,10 +28,19 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiPublicUploadRoute = ApiPublicUploadRouteImport.update({
   id: '/api/public/upload',
@@ -40,28 +52,41 @@ const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
   path: '/api/public/update-phone',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminClienteIdRoute =
+  AuthenticatedAdminClienteIdRouteImport.update({
+    id: '/cliente/$id',
+    path: '/cliente/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
+  '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
+  '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/multi': typeof MultiRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
+  '/_authenticated/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -69,26 +94,34 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/multi'
+    | '/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
+    | '/admin/cliente/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/multi'
+    | '/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
+    | '/admin/cliente/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/multi'
+    | '/_authenticated/admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
+    | '/_authenticated/admin/cliente/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   MultiRoute: typeof MultiRoute
   ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
@@ -111,12 +144,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/upload': {
       id: '/api/public/upload'
@@ -132,11 +179,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicUpdatePhoneRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/cliente/$id': {
+      id: '/_authenticated/admin/cliente/$id'
+      path: '/cliente/$id'
+      fullPath: '/admin/cliente/$id'
+      preLoaderRoute: typeof AuthenticatedAdminClienteIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminClienteIdRoute: typeof AuthenticatedAdminClienteIdRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminClienteIdRoute: AuthenticatedAdminClienteIdRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   MultiRoute: MultiRoute,
   ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
