@@ -17,7 +17,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
-import { Route as ApiPublicSetupAdminRouteImport } from './routes/api/public/setup-admin'
 import { Route as AuthenticatedAdminCuentaRouteImport } from './routes/_authenticated/admin_.cuenta'
 import { Route as AuthenticatedAdminClienteIdRouteImport } from './routes/_authenticated/admin.cliente.$id'
 
@@ -60,11 +59,6 @@ const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
   path: '/api/public/update-phone',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
-  id: '/api/public/setup-admin',
-  path: '/api/public/setup-admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedAdminCuentaRoute =
   AuthenticatedAdminCuentaRouteImport.update({
     id: '/admin_/cuenta',
@@ -85,7 +79,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/cuenta': typeof AuthenticatedAdminCuentaRoute
-  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -97,7 +90,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/cuenta': typeof AuthenticatedAdminCuentaRoute
-  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -111,7 +103,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/admin_/cuenta': typeof AuthenticatedAdminCuentaRoute
-  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/_authenticated/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -125,7 +116,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin'
     | '/admin/cuenta'
-    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -137,7 +127,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin'
     | '/admin/cuenta'
-    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -150,7 +139,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/_authenticated/admin_/cuenta'
-    | '/api/public/setup-admin'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/_authenticated/admin/cliente/$id'
@@ -162,7 +150,6 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   MultiRoute: typeof MultiRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
   ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
   ApiPublicUploadRoute: typeof ApiPublicUploadRoute
 }
@@ -225,13 +212,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicUpdatePhoneRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/setup-admin': {
-      id: '/api/public/setup-admin'
-      path: '/api/public/setup-admin'
-      fullPath: '/api/public/setup-admin'
-      preLoaderRoute: typeof ApiPublicSetupAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/admin_/cuenta': {
       id: '/_authenticated/admin_/cuenta'
       path: '/admin/cuenta'
@@ -279,7 +259,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   MultiRoute: MultiRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
   ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
   ApiPublicUploadRoute: ApiPublicUploadRoute,
 }
