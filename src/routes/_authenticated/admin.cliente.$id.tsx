@@ -71,12 +71,14 @@ function ClientDetail() {
     }
   }
 
+  type Doc = NonNullable<typeof data>["documents"][number];
+
   const grouped = useMemo(() => {
     if (!data) return [] as Array<{
       category: DocumentCategory;
-      months: Array<{ month: string; docs: typeof data.documents }>;
+      months: Array<{ month: string; docs: Doc[] }>;
     }>;
-    const byCat = new Map<DocumentCategory, Map<string, typeof data.documents>>();
+    const byCat = new Map<DocumentCategory, Map<string, Doc[]>>();
     for (const d of data.documents) {
       const cat = d.category as DocumentCategory;
       if (!byCat.has(cat)) byCat.set(cat, new Map());
