@@ -76,6 +76,30 @@ export const getSignedUrl = createServerFn({ method: "POST" })
     return { url: signed.signedUrl };
   });
 
+export const updateOwnAccount = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { email?: string; password?: string }) =>
+    z
+      .object({
+        email: z.string().trim().email().optional(),
+        password: z.string().min(8).max(200).optional(),
+      })
+      .refine((v) => v.email || v.password, { message: "Nada que actualizar" })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const patch: { email?: string; password?: string; email_confirm?: boolean } = {};
+    if (data.email) {
+      patch.email = data.email;
+      patch.email_confirm = true;
+    }
+    if (data.password) patch.password = data.password;
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(context.userId, patch);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export type ClientRow = {
   id: string;
   display_name: string;
