@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { updateOwnAccount } from "@/lib/admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin_.cuenta")({
+export const Route = createFileRoute("/_authenticated/admin_/cuenta")({
   head: () => ({
     meta: [
       { title: "Cuenta — Brunet Asesores" },
