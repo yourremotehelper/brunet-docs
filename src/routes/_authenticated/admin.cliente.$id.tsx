@@ -107,6 +107,9 @@ function ClientDetail() {
 
       <main className="mx-auto max-w-4xl px-5 py-8">
         {isLoading && <p className="text-sm text-muted-foreground">Cargando…</p>}
+        <pre style={{background:"#eee", padding:"10px", fontSize:"11px", whiteSpace:"pre-wrap"}}>
+          {JSON.stringify({ id, isLoading, isError, errorMsg: error instanceof Error ? error.message : null, hasData: !!data }, null, 2)}
+        </pre>
         {isError && (
           <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
             No se ha podido cargar este cliente: {error instanceof Error ? error.message : "Error desconocido"}
