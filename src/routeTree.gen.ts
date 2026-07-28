@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
 import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
+import { Route as AuthenticatedAdminCuentaRouteImport } from './routes/_authenticated/admin_.cuenta'
 import { Route as AuthenticatedAdminClienteIdRouteImport } from './routes/_authenticated/admin.cliente.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -58,6 +59,12 @@ const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
   path: '/api/public/update-phone',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminCuentaRoute =
+  AuthenticatedAdminCuentaRouteImport.update({
+    id: '/admin_/cuenta',
+    path: '/admin/cuenta',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminClienteIdRoute =
   AuthenticatedAdminClienteIdRouteImport.update({
     id: '/cliente/$id',
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/cuenta': typeof AuthenticatedAdminCuentaRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -81,6 +89,7 @@ export interface FileRoutesByTo {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/cuenta': typeof AuthenticatedAdminCuentaRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -93,6 +102,7 @@ export interface FileRoutesById {
   '/multi': typeof MultiRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin_/cuenta': typeof AuthenticatedAdminCuentaRoute
   '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
   '/api/public/upload': typeof ApiPublicUploadRoute
   '/_authenticated/admin/cliente/$id': typeof AuthenticatedAdminClienteIdRoute
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/admin'
+    | '/admin/cuenta'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/admin'
+    | '/admin/cuenta'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/admin/cliente/$id'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
     | '/multi'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/_authenticated/admin_/cuenta'
     | '/api/public/update-phone'
     | '/api/public/upload'
     | '/_authenticated/admin/cliente/$id'
@@ -199,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicUpdatePhoneRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin_/cuenta': {
+      id: '/_authenticated/admin_/cuenta'
+      path: '/admin/cuenta'
+      fullPath: '/admin/cuenta'
+      preLoaderRoute: typeof AuthenticatedAdminCuentaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/cliente/$id': {
       id: '/_authenticated/admin/cliente/$id'
       path: '/cliente/$id'
@@ -222,10 +242,12 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedAdminCuentaRoute: typeof AuthenticatedAdminCuentaRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedAdminCuentaRoute: AuthenticatedAdminCuentaRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

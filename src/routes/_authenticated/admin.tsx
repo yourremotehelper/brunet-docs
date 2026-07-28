@@ -63,12 +63,17 @@ function AdminList() {
               <p className="text-xs text-muted-foreground">Brunet Asesores</p>
             </div>
           </div>
-          <button
-            onClick={signOut}
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            Cerrar sesión
-          </button>
+          <div className="flex items-center gap-4 text-sm">
+            <Link to="/admin/cuenta" className="text-muted-foreground hover:text-foreground">
+              Cuenta
+            </Link>
+            <button
+              onClick={signOut}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Cerrar sesión
+            </button>
+          </div>
         </div>
       </header>
 
