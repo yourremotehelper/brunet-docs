@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicUploadRouteImport } from './routes/api/public/upload'
+import { Route as ApiPublicUpdatePhoneRouteImport } from './routes/api/public/update-phone'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicUploadRoute = ApiPublicUploadRouteImport.update({
+  id: '/api/public/upload',
+  path: '/api/public/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicUpdatePhoneRoute = ApiPublicUpdatePhoneRouteImport.update({
+  id: '/api/public/update-phone',
+  path: '/api/public/update-phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
+  '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
+  '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/update-phone': typeof ApiPublicUpdatePhoneRoute
+  '/api/public/upload': typeof ApiPublicUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/public/update-phone' | '/api/public/upload'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/public/update-phone' | '/api/public/upload'
+  id: '__root__' | '/' | '/api/public/update-phone' | '/api/public/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicUpdatePhoneRoute: typeof ApiPublicUpdatePhoneRoute
+  ApiPublicUploadRoute: typeof ApiPublicUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/upload': {
+      id: '/api/public/upload'
+      path: '/api/public/upload'
+      fullPath: '/api/public/upload'
+      preLoaderRoute: typeof ApiPublicUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/update-phone': {
+      id: '/api/public/update-phone'
+      path: '/api/public/update-phone'
+      fullPath: '/api/public/update-phone'
+      preLoaderRoute: typeof ApiPublicUpdatePhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicUpdatePhoneRoute: ApiPublicUpdatePhoneRoute,
+  ApiPublicUploadRoute: ApiPublicUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
